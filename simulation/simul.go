@@ -2,7 +2,7 @@ package main
 
 import (
 	// Service needs to be imported here to be instantiated.
-	_ "github.com/dedis/cothority_template/service"
+	_ "github.com/SabrinaKall/cothority_lottery/service"
 	"go.dedis.ch/onet/v3/simul"
 )
 

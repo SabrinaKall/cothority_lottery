@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/dedis/cothority_template/protocol"
+	"github.com/SabrinaKall/cothority_lottery/protocol"
 	"github.com/stretchr/testify/require"
 	"go.dedis.ch/kyber/v3/suites"
 	"go.dedis.ch/onet/v3"

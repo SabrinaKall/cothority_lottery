@@ -8,7 +8,7 @@ import (
 	"errors"
 	"os"
 
-	template "github.com/dedis/cothority_template"
+	template "github.com/SabrinaKall/cothority_lottery"
 
 	"go.dedis.ch/onet/v3/app"
 

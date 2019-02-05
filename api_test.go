@@ -6,8 +6,8 @@ import (
 	"github.com/stretchr/testify/require"
 
 	// We need to include the service so it is started.
-	"github.com/dedis/cothority_template"
-	_ "github.com/dedis/cothority_template/service"
+	"github.com/SabrinaKall/cothority_lottery"
+	_ "github.com/SabrinaKall/cothority_lottery/service"
 	"go.dedis.ch/kyber/v3/suites"
 	"go.dedis.ch/onet/v3"
 	"go.dedis.ch/onet/v3/log"
