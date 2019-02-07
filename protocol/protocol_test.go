@@ -7,16 +7,21 @@ protocol, as in Test Driven Development.
 */
 
 import (
-	"fmt"
 	"testing"
 	"time"
 
 	"github.com/SabrinaKall/cothority_lottery/protocol"
 	"github.com/stretchr/testify/require"
-	"go.dedis.ch/kyber/v3/suites"
+
+	/*"go.dedis.ch/kyber/v3/suites"
 	"go.dedis.ch/onet/v3"
 	"go.dedis.ch/onet/v3/log"
-	"go.dedis.ch/onet/v3/network"
+	"go.dedis.ch/onet/v3/network"*/
+
+	"go.dedis.ch/kyber/suites"
+	"go.dedis.ch/onet"
+	"go.dedis.ch/onet/log"
+	"go.dedis.ch/onet/network"
 )
 
 var tSuite = suites.MustFind("Ed25519")
@@ -28,6 +33,9 @@ func TestMain(m *testing.M) {
 // Tests a 2, 5 and 13-node system. It is good practice to test different
 // sizes of trees to make sure your protocol is stable.
 func TestNode(t *testing.T) {
+
+	log.SetDebugVisible(2)
+
 	nodes := []int{2, 5, 13}
 	for _, nbrNodes := range nodes {
 		local := onet.NewLocalTest(tSuite)
@@ -42,7 +50,6 @@ func TestNode(t *testing.T) {
 		case children := <-protocol.ChildCount:
 			log.Lvl2("Instance 1 is done")
 			require.Equal(t, children, nbrNodes, "Didn't get a child-cound of", nbrNodes)
-			fmt.Printf("%d worked \n", nbrNodes)
 		case <-time.After(timeout):
 			t.Fatal("Didn't finish in time")
 		}
