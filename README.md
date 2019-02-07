@@ -1,3 +1,7 @@
+# Simple Insecure Lottery Test
+
+Implement a simple insecure lottery protocol. The protocol leader, i.e., the tree root, sends announcements down the tree. When receiving an announcement, every node generates a random number. Tree leaves start sending their random numbers back to the leader up the tree, intermediate nodes filter out the smaller numbers, and eventually the root will have the highest number with the node ID that generated it. 
+
 [![Build Status](https://travis-ci.org/dedis/cothority_template.svg?branch=master)](https://travis-ci.org/dedis/cothority_template)
 
 Navigation: [DEDIS](https://github.com/dedis/doc/tree/master/README.md) ::
