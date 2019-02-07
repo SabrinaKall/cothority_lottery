@@ -8,7 +8,8 @@ so that it can find out who sent the message.
 */
 
 //import "go.dedis.ch/onet/v3"
-import "go.dedis.ch/onet"
+//import "go.dedis.ch/onet"
+import "github.com/dedis/onet"
 
 // Name can be used from other packages to refer to this protocol.
 const Name = "Template"
