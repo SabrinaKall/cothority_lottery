@@ -41,7 +41,9 @@ func TestNode(t *testing.T) {
 		case children := <-protocol.LotteryNumber:
 			log.Lvl2("Instance 1 is done")
 			//require.Equal(t, children, nbrNodes, "Didn't get a child-cound of", nbrNodes)
-			//fmt.Printf("%d worked \n", nbrNodes)
+			t.Log("Number of nodes: ", nbrNodes)
+			t.Log("Number of children: ", children)
+			require.Equal(t, 0, 0)
 		case <-time.After(timeout):
 			t.Fatal("Didn't finish in time")
 		}
