@@ -40,11 +40,13 @@ func TestNode(t *testing.T) {
 		protocol := pi.(*protocol.LotteryProtocol)
 		timeout := network.WaitRetry * time.Duration(network.MaxRetryConnect*nbrNodes*2) * time.Millisecond
 		select {
-		case highestNumber := <-protocol.LotteryNumber:
+		case highestTicket := <-protocol.Ticket:
 			log.Lvl2("Instance 1 is done")
 			//require.Equal(t, children, nbrNodes, "Didn't get a child-cound of", nbrNodes)
 			t.Log("Number of nodes: ", nbrNodes)
-			t.Log("Highest found number: ", highestNumber)
+			t.Log("Highest found number: ", highestTicket.Number)
+			t.Log("Highest number owner ID: ", highestTicket.OwnerID)
+
 			require.Equal(t, 0, 0)
 		case <-time.After(timeout):
 			t.Fatal("Didn't finish in time")
