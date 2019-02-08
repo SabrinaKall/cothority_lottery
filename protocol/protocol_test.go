@@ -27,6 +27,8 @@ func TestMain(m *testing.M) {
 // Tests a 2, 5 and 13-node system. It is good practice to test different
 // sizes of trees to make sure your protocol is stable.
 func TestNode(t *testing.T) {
+
+	log.SetDebugVisible(3)
 	nodes := []int{2, 5, 13}
 	for _, nbrNodes := range nodes {
 		local := onet.NewLocalTest(tSuite)
@@ -38,11 +40,11 @@ func TestNode(t *testing.T) {
 		protocol := pi.(*protocol.LotteryProtocol)
 		timeout := network.WaitRetry * time.Duration(network.MaxRetryConnect*nbrNodes*2) * time.Millisecond
 		select {
-		case children := <-protocol.LotteryNumber:
+		case highestNumber := <-protocol.LotteryNumber:
 			log.Lvl2("Instance 1 is done")
 			//require.Equal(t, children, nbrNodes, "Didn't get a child-cound of", nbrNodes)
 			t.Log("Number of nodes: ", nbrNodes)
-			t.Log("Number of children: ", children)
+			t.Log("Highest found number: ", highestNumber)
 			require.Equal(t, 0, 0)
 		case <-time.After(timeout):
 			t.Fatal("Didn't finish in time")

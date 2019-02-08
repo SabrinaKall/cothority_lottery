@@ -25,13 +25,22 @@ func init() {
 	onet.GlobalProtocolRegister(Name, NewProtocol)
 }
 
+// LotteryTicket holds a "lottery ticket"
+//
+// Has a number and the id of the original owner node
+//
+type LotteryTicket struct {
+	Number  int
+	OwnerID onet.TreeNodeID
+}
+
 // LotteryProtocol holds the state of a given protocol.
 //
 // For this example, it defines a channel that will receive the biggest lottery number among
 // children. Only the root-node will write to the channel.
 type LotteryProtocol struct {
 	*onet.TreeNodeInstance
-	LotteryNumber chan int
+	Ticket chan LotteryTicket
 }
 
 // Check that *TemplateProtocol implements onet.ProtocolInstance
@@ -41,7 +50,7 @@ var _ onet.ProtocolInstance = (*LotteryProtocol)(nil)
 func NewProtocol(n *onet.TreeNodeInstance) (onet.ProtocolInstance, error) {
 	t := &LotteryProtocol{
 		TreeNodeInstance: n,
-		LotteryNumber:    make(chan int),
+		Ticket:           make(chan LotteryTicket),
 	}
 	for _, handler := range []interface{}{t.HandleAnnounce, t.HandleReply} {
 		if err := t.RegisterHandler(handler); err != nil {
@@ -77,18 +86,20 @@ func (p *LotteryProtocol) HandleReply(reply []StructReply) error {
 	defer p.Done()
 
 	ownNumber := rand.Intn(100)
+	ownID := p.TreeNode().ID
 
 	for _, c := range reply {
 		if c.LotteryNumber > ownNumber {
 			ownNumber = c.LotteryNumber
+			ownID = c.OwnerID
 		}
 	}
-	log.Lvl3(p.ServerIdentity().Address, "is done with lottery number", ownNumber)
+	log.Lvl1(p.ServerIdentity().Address, "is done with lottery number", ownNumber)
 	if !p.IsRoot() {
 		log.Lvl3("Sending to parent")
-		return p.SendTo(p.Parent(), &Reply{ownNumber})
+		return p.SendTo(p.Parent(), &Reply{ownNumber, ownID})
 	}
 	log.Lvl3("Root-node is done - biggest lottery number found:", ownNumber)
-	p.LotteryNumber <- ownNumber
+	p.Ticket <- LotteryTicket{ownNumber, ownID}
 	return nil
 }
