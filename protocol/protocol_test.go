@@ -12,7 +12,6 @@ import (
 
 	"github.com/SabrinaKall/cothority_lottery/protocol"
 	"github.com/stretchr/testify/require"
-
 	"go.dedis.ch/kyber/v3/suites"
 	"go.dedis.ch/onet/v3"
 	"go.dedis.ch/onet/v3/log"
@@ -28,23 +27,21 @@ func TestMain(m *testing.M) {
 // Tests a 2, 5 and 13-node system. It is good practice to test different
 // sizes of trees to make sure your protocol is stable.
 func TestNode(t *testing.T) {
-
-	//log.SetDebugVisible(1)
-
 	nodes := []int{2, 5, 13}
 	for _, nbrNodes := range nodes {
 		local := onet.NewLocalTest(tSuite)
 		_, _, tree := local.GenTree(nbrNodes, true)
 		log.Lvl3(tree.Dump())
 
-		pi, err := local.StartProtocol("Template", tree)
+		pi, err := local.StartProtocol("Lottery", tree)
 		require.Nil(t, err)
-		prot := pi.(*protocol.TemplateProtocol)
+		protocol := pi.(*protocol.LotteryProtocol)
 		timeout := network.WaitRetry * time.Duration(network.MaxRetryConnect*nbrNodes*2) * time.Millisecond
 		select {
-		case children := <-prot.ChildCount:
+		case children := <-protocol.LotteryNumber:
 			log.Lvl2("Instance 1 is done")
-			require.Equal(t, children, nbrNodes, "Didn't get a child-cound of", nbrNodes)
+			//require.Equal(t, children, nbrNodes, "Didn't get a child-cound of", nbrNodes)
+			//fmt.Printf("%d worked \n", nbrNodes)
 		case <-time.After(timeout):
 			t.Fatal("Didn't finish in time")
 		}

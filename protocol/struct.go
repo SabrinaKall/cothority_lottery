@@ -10,7 +10,7 @@ so that it can find out who sent the message.
 import "go.dedis.ch/onet/v3"
 
 // Name can be used from other packages to refer to this protocol.
-const Name = "Template"
+const Name = "Lottery"
 
 // Announce is used to pass a message to all children.
 type Announce struct {
@@ -26,7 +26,7 @@ type StructAnnounce struct {
 
 // Reply returns the count of all children.
 type Reply struct {
-	ChildrenCount int
+	LotteryNumber int
 }
 
 // StructReply just contains Reply and the data necessary to identify and
