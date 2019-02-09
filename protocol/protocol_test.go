@@ -28,8 +28,8 @@ func TestMain(m *testing.M) {
 // sizes of trees to make sure your protocol is stable.
 func TestNode(t *testing.T) {
 
-	log.SetDebugVisible(3)
-	nodes := []int{2, 5, 13}
+	log.SetDebugVisible(1)
+	nodes := []int{13}
 	for _, nbrNodes := range nodes {
 		local := onet.NewLocalTest(tSuite)
 		_, _, tree := local.GenTree(nbrNodes, true)
@@ -42,12 +42,10 @@ func TestNode(t *testing.T) {
 		select {
 		case highestTicket := <-protocol.Ticket:
 			log.Lvl2("Instance 1 is done")
-			//require.Equal(t, children, nbrNodes, "Didn't get a child-cound of", nbrNodes)
 			t.Log("Number of nodes: ", nbrNodes)
 			t.Log("Highest found number: ", highestTicket.Number)
 			t.Log("Highest number owner ID: ", highestTicket.OwnerID)
 
-			require.Equal(t, 0, 0)
 		case <-time.After(timeout):
 			t.Fatal("Didn't finish in time")
 		}

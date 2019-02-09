@@ -30,8 +30,9 @@ func init() {
 // Has a number and the id of the original owner node
 //
 type LotteryTicket struct {
-	Number  int
-	OwnerID onet.TreeNodeID
+	Number int
+	//OwnerID onet.TreeNodeID
+	OwnerID int
 }
 
 // LotteryProtocol holds the state of a given protocol.
@@ -86,7 +87,10 @@ func (p *LotteryProtocol) HandleReply(reply []StructReply) error {
 	defer p.Done()
 
 	ownNumber := rand.Intn(100)
-	ownID := p.TreeNode().ID
+	//ownID := p.TreeNode().ID
+	ownID := p.TreeNode().RosterIndex
+
+	log.Lvl1(ownID, " draws lottery number ", ownNumber)
 
 	for _, c := range reply {
 		if c.LotteryNumber > ownNumber {

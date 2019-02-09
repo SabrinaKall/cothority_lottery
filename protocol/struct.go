@@ -27,7 +27,8 @@ type StructAnnounce struct {
 // Reply returns the count of all children.
 type Reply struct {
 	LotteryNumber int
-	OwnerID       onet.TreeNodeID
+	//OwnerID       onet.TreeNodeID
+	OwnerID int
 }
 
 // StructReply just contains Reply and the data necessary to identify and
